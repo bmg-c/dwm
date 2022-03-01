@@ -29,6 +29,7 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
+	{ "pcmanfm",  NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 };
 
@@ -41,7 +42,7 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
-	{ "[@]",      spiral },  
+	{ "[@]",      spiral },
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 };
@@ -65,50 +66,85 @@ static const char *termcmd[]  = { "urxvt", NULL };
 #include "shiftview.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_q,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_w,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_e,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_r,      setlayout,      {.v = &layouts[3]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
-	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
-	{ MODKEY,                       XK_c,  	   shiftview,      {.i = +1 } },
-	{ MODKEY,                       XK_x,  	   shiftview,      {.i = -1 } },
-	{ MODKEY,			XK_Up,	   spawn,	   SHCMD("amixer-louder")},
-	{ MODKEY,			XK_Down,   spawn,	   SHCMD("amixer-quieter")},
-	{ MODKEY,                       XK_F9,	   spawn,          SHCMD("setlayout-dvorakqw") },
-	{ MODKEY,			XK_F10,	   spawn,	   SHCMD("setlayout-dvorak") },
-	{ MODKEY,                       XK_F11,    spawn,          SHCMD("setlayout-qwerty") },
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY,                       33,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       185,      spawn,          {.v = dmenucmd } },
+	{ MODKEY|ShiftMask,             36, 	 spawn,          {.v = termcmd } },
+	{ MODKEY,                       56,      togglebar,      {0} },
+	{ MODKEY,                       246,      togglebar,      {0} },
+	{ MODKEY,                       44,      focusstack,     {.i = +1 } },
+	{ MODKEY,                       226,      focusstack,     {.i = +1 } },
+	{ MODKEY,                       45,      focusstack,     {.i = -1 } },
+	{ MODKEY,                       227,      focusstack,     {.i = -1 } },
+	{ MODKEY,                       31,      incnmaster,     {.i = +1 } },
+	{ MODKEY,                       183,      incnmaster,     {.i = +1 } },
+	{ MODKEY,                       40,      incnmaster,     {.i = -1 } },
+	{ MODKEY,                       220,      incnmaster,     {.i = -1 } },
+	{ MODKEY,                       43,      setmfact,       {.f = -0.05} },
+	{ MODKEY,                       224,      setmfact,       {.f = -0.05} },
+	{ MODKEY,                       46,      setmfact,       {.f = +0.05} },
+	{ MODKEY,                       228,      setmfact,       {.f = +0.05} },
+	{ MODKEY,                       36,	 zoom,           {0} },
+	{ MODKEY,                       23,    	 view,           {0} },
+	{ MODKEY|ShiftMask,             54,      killclient,     {0} },
+	{ MODKEY|ShiftMask,             235,      killclient,     {0} },
+	{ MODKEY,                       24,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       161,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       25,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       162,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       26,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       168,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       27,      setlayout,      {.v = &layouts[3]} },
+	{ MODKEY,                       170,      setlayout,      {.v = &layouts[3]} },
+	{ MODKEY,                       65,  setlayout,      {0} },
+	{ MODKEY|ShiftMask,             65,  togglefloating, {0} },
+	{ MODKEY,                       19,      view,           {.ui = ~0 } },
+	{ MODKEY,                       155,      view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             19,      tag,            {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             155,      tag,            {.ui = ~0 } },
+	{ MODKEY,                       59,  focusmon,       {.i = -1 } },
+	{ MODKEY,                       251,  focusmon,       {.i = -1 } },
+	{ MODKEY,                       60, focusmon,       {.i = +1 } },
+	{ MODKEY,                       252, focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,             59,  tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             251,  tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             60, tagmon,         {.i = +1 } },
+	{ MODKEY|ShiftMask,             252, tagmon,         {.i = +1 } },
+	{ MODKEY,                       20,  setgaps,        {.i = -1 } },
+	{ MODKEY,                       159,  setgaps,        {.i = -1 } },
+	{ MODKEY,                       21,  setgaps,        {.i = +1 } },
+	{ MODKEY,                       160,  setgaps,        {.i = +1 } },
+	{ MODKEY|ShiftMask,             21,  setgaps,        {.i = 0  } },
+	{ MODKEY|ShiftMask,             160,  setgaps,        {.i = 0  } },
+	{ MODKEY,                       31,  	   shiftview,      {.i = +1 } },
+	{ MODKEY,                       183,  	   shiftview,      {.i = +1 } },
+	{ MODKEY,                       53,  	   shiftview,      {.i = -1 } },
+	{ MODKEY,                       234,  	   shiftview,      {.i = -1 } },
+	{ MODKEY,							  111,	   spawn,	   SHCMD("amixer-louder")},
+	{ MODKEY,							  116,   spawn,	   SHCMD("amixer-quieter")},
+	{ MODKEY,                       75,	   spawn,          SHCMD("setlayout-dvorakqw") },
+	{ MODKEY,							  76,	   spawn,	   SHCMD("setlayout-dvorak") },
+	{ MODKEY,                       95,    spawn,          SHCMD("setlayout-qwerty") },
+	{ MODKEY,                       71,	   spawn,          SHCMD("darker") },
+	{ MODKEY,                       72,     spawn,          SHCMD("brighter") },
+	TAGKEYS(                        10,                      0)
+	TAGKEYS(                        131,                      0)
+	TAGKEYS(                        11,                      1)
+	TAGKEYS(                        109,                      1)
+	TAGKEYS(                        12,                      2)
+	TAGKEYS(                        138,                      2)
+	TAGKEYS(                        13,                      3)
+	TAGKEYS(                        140,                      3)
+	TAGKEYS(                        14,                      4)
+	TAGKEYS(                        120,                      4)
+	TAGKEYS(                        15,                      5)
+	TAGKEYS(                        128,                      5)
+	TAGKEYS(                        16,                      6)
+	TAGKEYS(                        147,                      6)
+	TAGKEYS(                        17,                      7)
+	TAGKEYS(                        149,                      7)
+	TAGKEYS(                        18,                      8)
+	TAGKEYS(                        154,                      8)
+	{ MODKEY|ShiftMask,             24,      quit,           {0} },
 };
 
 /* button definitions */
@@ -127,4 +163,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
