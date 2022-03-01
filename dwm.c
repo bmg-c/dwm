@@ -147,6 +147,7 @@ static int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interac
 static void arrange(Monitor *m);
 static void arrangemon(Monitor *m);
 static void attach(Client *c);
+static void attachbottom(Client *c);
 static void attachstack(Client *c);
 static void buttonpress(XEvent *e);
 static void checkotherwm(void);
@@ -212,6 +213,7 @@ static void tagmon(const Arg *arg);
 static void tile(Monitor *);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
+static void togglefullscr(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggleview(const Arg *arg);
 static void unfocus(Client *c, int setfocus);
@@ -405,6 +407,15 @@ attach(Client *c)
 {
 	c->next = c->mon->clients;
 	c->mon->clients = c;
+}
+
+void
+attachbottom(Client *c)
+{
+	Client **tc;
+	c->next = NULL;
+	for (tc = &c->mon->clients; *tc; tc = &(*tc)->next);
+	*tc = c;
 }
 
 void
@@ -829,6 +840,8 @@ focusmon(const Arg *arg)
 	unfocus(selmon->sel, 0);
 	selmon = m;
 	focus(NULL);
+	if (selmon->sel)
+		XWarpPointer(dpy, None, selmon->sel->win, 0, 0, 0, 0, selmon->sel->w/2, selmon->sel->h/2);
 }
 
 void
@@ -854,6 +867,7 @@ focusstack(const Arg *arg)
 	if (c) {
 		focus(c);
 		restack(selmon);
+		XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w/2, c->h/2);
 	}
 }
 
@@ -1051,13 +1065,15 @@ manage(Window w, XWindowAttributes *wa)
 	updatewindowtype(c);
 	updatesizehints(c);
 	updatewmhints(c);
+	c->x = c->mon->mx + (c->mon->mw - WIDTH(c)) / 2;
+	c->y = c->mon->my + (c->mon->mh - HEIGHT(c)) / 2;
 	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 	grabbuttons(c, 0);
 	if (!c->isfloating)
 		c->isfloating = c->oldstate = trans != None || c->isfixed;
 	if (c->isfloating)
 		XRaiseWindow(dpy, c->win);
-	attach(c);
+	attachbottom(c);
 	attachstack(c);
 	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
 		(unsigned char *) &(c->win), 1);
@@ -1412,7 +1428,7 @@ sendmon(Client *c, Monitor *m)
 	detachstack(c);
 	c->mon = m;
 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
-	attach(c);
+	attachbottom(c);
 	attachstack(c);
 	focus(NULL);
 	arrange(NULL);
@@ -1725,6 +1741,13 @@ togglefloating(const Arg *arg)
 }
 
 void
+togglefullscr(const Arg *arg)
+{
+  if(selmon->sel)
+    setfullscreen(selmon->sel, !selmon->sel->isfullscreen);
+}
+
+void
 toggletag(const Arg *arg)
 {
 	unsigned int newtags;
@@ -1902,7 +1925,7 @@ updategeom(void)
 					m->clients = c->next;
 					detachstack(c);
 					c->mon = mons;
-					attach(c);
+					attachbottom(c);
 					attachstack(c);
 				}
 				if (m == selmon)
