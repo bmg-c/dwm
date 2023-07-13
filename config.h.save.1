@@ -9,7 +9,7 @@ static const unsigned int snap        = 10;         /* snap pixel */
 static const int showbar              = 1;          /* 0 means no bar */
 static const int topbar               = 1;          /* 0 means bottom bar */
 static const unsigned int barheight   = gappx + 30; /* height of bar */
-static const char *fonts[]            = { "RobotoMono Nerd Font:size=12" };
+static const char *fonts[]            = { "Roboto Mono:size=12" };
 static const Base16Colors base16theme = base16gruvboxdarkmedium;
 static const char *colors[][3]        = {
 	/*               fg                  bg                  border */
@@ -27,16 +27,6 @@ static const Rule rules[] = {
 	 */
 	/* class  instance  title  tags mask  iscentered,  isfloating  monitor */
 	{ NULL,   NULL,     NULL,  0,         0,           0,          -1 },
-	{ "firefox",   "Navigator",     NULL,  1 << 1,         0,           0,          -1 },
-	{ "Pcmanfm",   "pcmanfm",     NULL,  0,         1,           1,          -1 },
-	{ "MuPDF",   "mupdf",     NULL,  0,         1,           1,          -1 },
-	{ "YouTube Music",   "youtube music",     NULL,  1 << 3,         0,           0,          -1 },
-	{ "discord",   "discord",     NULL,  1 << 4,         0,           0,          -1 },
-	{ "easyeffects",   "easyeffects",     NULL,  1 << 8,         0,           0,          -1 },
-	{ "Steam",   "Steam",     NULL,  1 << 7,         0,           0,          -1 },
-	{ NULL,   NULL,     "Steam",  1 << 7,         1,           0,          -1 },
-	{ "PrismLauncher",   "prismlauncher",     NULL,  1 << 7,         0,           0,          -1 },
-	{ "TelegramDesktop",   "telegram-desktop",     NULL,  1 << 4,         0,           0,          -1 },
 };
 
 /* layout(s) */
@@ -91,12 +81,13 @@ static const char *brightdef[] 	 = 	{ "brightnessctl", "set", "180", NULL };
 
 static const char *screenshot[]  = 	{ "flameshot", "gui", NULL };
 
-static const char *wpchange[]	 =	{ "wpchange", NULL };
-static const char *hornywpchange[] =    { "wpchange", "-h", NULL };
+static const char *wpchange[]	 =	{ "python", "/home/ivan/scripts/wpchange.py", NULL };
+static const char *hornywpchange[] =    { "python", "/home/ivan/scripts/wpchange.py", "-h", NULL };
 
-static const char *setkblayout[] = 	{ "setkblayout", NULL };
+static const char *setkbqwerty[] = 	{ "sh", "/home/ivan/scripts/setkblayout.sh", "qwerty", NULL };
+static const char *setkbengram[] = 	{ "sh", "/home/ivan/scripts/setkblayout.sh", "engram", NULL };
 
-static const char *startscreen[] = { "startscreen", NULL };
+static const char *startscreen[] = { "sh", "/home/ivan/scripts/startscreen.sh", NULL };
 
 static Key keys[] = {
 	/* modifier                     key	function        argument */
@@ -118,6 +109,7 @@ static Key keys[] = {
         { MODKEY,                       46,	setmfact,       {.f = +0.05} },
         { MODKEY,                       228,	setmfact,       {.f = +0.05} },
         { MODKEY,                       36,	zoom,           {0} },
+        { MODKEY,                       23,	view,           {0} },
         { MODKEY|ShiftMask,             54,	killclient,     {0} },
         { MODKEY|ShiftMask,             235,	killclient,     {0} },
         { MODKEY,                       24,	setlayout,      {.v = &layouts[0]} },
@@ -158,7 +150,8 @@ static Key keys[] = {
 	{ MODKEY,			96,	spawn,		{ .v = wpchange } },		// F12.	Randomize wallpaper
 	{ MODKEY|ShiftMask, 		96,     spawn,          { .v = hornywpchange } },       // Shift-F12. Randomize horny wallpaper
 
-        { MODKEY,                       95,     spawn,          { .v = setkblayout } }, 	// F11. Set Keyboard Layout
+	{ MODKEY,                       95,     spawn,          { .v = setkbqwerty } },		// F10.	Set QWERTY layout 
+        { MODKEY,                       76,     spawn,          { .v = setkbengram } }, 	// F11. Set Engram layout
     { MODKEY,                       73,         spawn,           { .v = startscreen } },
 
 	TAGKEYS(                        10,                     0)
