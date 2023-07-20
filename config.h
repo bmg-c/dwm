@@ -94,7 +94,7 @@ static const char *screenshot[]  = 	{ "flameshot", "gui", NULL };
 static const char *wpchange[]	 =	{ "wpchange", NULL };
 static const char *hornywpchange[] =    { "wpchange", "-h", NULL };
 
-static const char *setkblayout[] = 	{ "setkblayout", "-rofi", NULL };
+static const char *setkblayout[] = 	{ "setkblayout", "-rofi", "us:,ru:", "us:engram-qwerty,us:russian-qwerty", NULL };
 
 static const char *startscreen[] = { "startscreen", NULL };
 

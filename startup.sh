@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-setkblayout engram 			    # Keyboard layout set
+setkblayout us:engram-qwerty,us:russian-qwerty 			    # Keyboard layout set
 xset r rate 340 38 				            # Keyboard repeat rate set
 brightnessctl set 180 				        # Default brightness set
 dbus-update-activation-environment --all 	# For SSH and else to work
